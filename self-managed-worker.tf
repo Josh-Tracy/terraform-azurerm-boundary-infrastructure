@@ -30,6 +30,7 @@ locals {
   custom_data_args = {
     hcp_boundary_cluster_id = var.hcp_boundary_cluster_id
     worker_public_address   = azurerm_public_ip.worker_public_ip[0].ip_address
+    boundary_worker_version = var.boundary_worker_version
 
   }
 }

@@ -11,7 +11,7 @@ mkdir /opt/boundary/
 echo "[INFO] Adding apt.releases.hashicorp.com and downloading Boundary."
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add - ;\
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main" ;\
-sudo apt-get update && sudo apt-get install boundary-worker-hcp=0.12.3+hcp-1 -y
+sudo apt-get update && sudo apt-get install boundary-worker-hcp=${boundary_worker_version} -y
 
 }
 

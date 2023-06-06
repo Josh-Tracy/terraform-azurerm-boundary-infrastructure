@@ -62,6 +62,12 @@ variable "hcp_boundary_cluster_id" {
   description = "The HCP cluster ID to connect to."
 }
 
+variable "boundary_worker_version" {
+  type        = string
+  description = "The boundary-worker version to download to the self-managed-worker."
+  default = "0.12.3+hcp-1"
+}
+
 #-------------------------------------------------------------------------
 # SSH Targets
 #-------------------------------------------------------------------------
