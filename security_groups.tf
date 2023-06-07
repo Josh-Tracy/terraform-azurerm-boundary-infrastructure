@@ -12,6 +12,14 @@ resource "azurerm_network_security_group" "boundary_worker_nsg" {
   resource_group_name = azurerm_resource_group.boundary-rg.name
 }
 
+resource "azurerm_network_security_group" "database_nsg" {
+  count = var.deploy_database_target == true ? 1 : 0
+
+  name                = "${var.friendly_name_prefix}-database-nsg"
+  location            = azurerm_resource_group.boundary-rg.location
+  resource_group_name = azurerm_resource_group.boundary-rg.name
+}
+
 resource "azurerm_network_security_rule" "boundary_ssh_outofband" {
   resource_group_name         = azurerm_resource_group.boundary-rg.name
   network_security_group_name = azurerm_network_security_group.boundary-nsg.name
@@ -92,6 +100,22 @@ resource "azurerm_network_security_rule" "rdp" {
   destination_address_prefix  = var.boundary_subnet_cidr
 }
 
+resource "azurerm_network_security_rule" "postgresql" {
+  count = var.deploy_database_target == true ? 1 : 0
+
+  resource_group_name         = azurerm_resource_group.boundary-rg.name
+  network_security_group_name = azurerm_network_security_group.database_nsg[0].name
+  name                        = "postgresql"
+  priority                    = 1001
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "5432"
+  source_address_prefixes     = [azurerm_linux_virtual_machine.boundary_worker[0].public_ip_address]
+  destination_address_prefix  = var.database_subnet_cidr
+}
+
 resource "azurerm_subnet_network_security_group_association" "subnet_nsg_association1" {
   subnet_id                 = azurerm_subnet.boundary-subnet.id
   network_security_group_id = azurerm_network_security_group.boundary-nsg.id
@@ -102,4 +126,11 @@ resource "azurerm_subnet_network_security_group_association" "subnet_nsg_associa
 
   subnet_id                 = azurerm_subnet.boundary_worker_subnet[0].id
   network_security_group_id = azurerm_network_security_group.boundary_worker_nsg[0].id
+}
+
+resource "azurerm_subnet_network_security_group_association" "subnet_nsg_association_db" {
+  count = var.deploy_database_target == true ? 1 : 0
+
+  subnet_id                 = azurerm_subnet.database_subnet[0].id
+  network_security_group_id = azurerm_network_security_group.database_nsg[0].id
 }

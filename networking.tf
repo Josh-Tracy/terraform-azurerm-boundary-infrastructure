@@ -27,6 +27,26 @@ resource "azurerm_subnet" "boundary_worker_subnet" {
   ]
 }
 
+resource "azurerm_subnet" "database_subnet" {
+  count = var.deploy_database_target == true ? 1 : 0
+
+  name                 = "${var.friendly_name_prefix}-postgresql"
+  address_prefixes     = [var.database_subnet_cidr]
+  virtual_network_name = azurerm_virtual_network.boundary-vnet.name
+  resource_group_name  = azurerm_resource_group.boundary-rg.name
+  service_endpoints = [
+    "Microsoft.KeyVault"
+  ]
+  delegation {
+    name = "flexibleServers"
+
+    service_delegation {
+      name    = "Microsoft.DBforPostgreSQL/flexibleServers"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+    }
+  }
+}
+
 resource "azurerm_nat_gateway" "nat_gateway" {
   name                    = "${var.friendly_name_prefix}-natgw"
   location                = azurerm_resource_group.boundary-rg.location

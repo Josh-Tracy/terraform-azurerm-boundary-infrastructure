@@ -98,9 +98,30 @@ variable "ssh_private_key" {
   description = "The name of the ssh private key that will be uploaded to boundary credential store. Must be placed relative to the working directory."
 }
 
+#-------------------------------------------------------------------------
+# Database Targets
+#-------------------------------------------------------------------------
 variable "deploy_database_target" {
   type        = bool
   description = "True or False. Deploy an Azure PostgreSQL Flexible server."
+}
+
+variable "database_subnet_cidr" {
+  type        = string
+  description = "True or False. Deploy an Azure PostgreSQL Flexible server."
+  default     = "10.0.3.0/24"
+}
+
+variable "database_target_username" {
+  type        = string
+  description = "The username of the PostgreSQL user that will be created."
+  default     = "boundaryadmin"
+}
+
+variable "database_target_password" {
+  type        = string
+  description = "The password of the `database_target_username` user that will be created."
+  default     = "B0uNdairyP@ss"
 }
 
 #-------------------------------------------------------------------------
@@ -122,6 +143,7 @@ variable "rdp_target_password" {
   description = "The password of the `rdp_target_username` user that will be created on the VM. Will also be used to RDP."
   default     = "B0uNdairyP@ss"
 }
+
 #-------------------------------------------------------------------------
 # Storage Account
 #-------------------------------------------------------------------------
