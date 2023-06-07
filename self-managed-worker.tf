@@ -17,7 +17,7 @@ resource "azurerm_network_interface" "boundary_worker_nic" {
 
   ip_configuration {
     name                          = "internal"
-    subnet_id                     = azurerm_subnet.boundary-subnet.id
+    subnet_id                     = azurerm_subnet.boundary_worker_subnet[0].id
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.worker_public_ip[0].id
   }

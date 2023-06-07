@@ -103,13 +103,13 @@ resource "boundary_host_set_static" "ssh" {
 resource "boundary_target" "ssh" {
   count = var.deploy_ssh_target == true ? 1 : 0
 
-  name         = "${var.friendly_name_prefix}-ssh-linux-vms"
-  description  = "Ssh target"
-  type         = "ssh"
-  default_port = "22"
-  scope_id     = var.boundary_scope_project_id
-  ingress_worker_filter = "\"azure-worker\" in \"/tags/type\""
-  egress_worker_filter = "\"azure-worker\" in \"/tags/type\""
+  name                  = "${var.friendly_name_prefix}-ssh-linux-vms"
+  description           = "Ssh target"
+  type                  = "ssh"
+  default_port          = "22"
+  scope_id              = var.boundary_scope_project_id
+  ingress_worker_filter = var.deploy_self_managed_worker == true ? "\"azure-worker\" in \"/tags/type\"" : null
+  egress_worker_filter  = var.deploy_self_managed_worker == true ? "\"azure-worker\" in \"/tags/type\"" : null
   host_source_ids = [
     boundary_host_set_static.ssh[0].id
   ]

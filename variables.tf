@@ -65,7 +65,7 @@ variable "hcp_boundary_cluster_id" {
 variable "boundary_worker_version" {
   type        = string
   description = "The boundary-worker version to download to the self-managed-worker."
-  default = "0.12.3+hcp-1"
+  default     = "0.12.3+hcp-1"
 }
 
 #-------------------------------------------------------------------------
@@ -98,16 +98,30 @@ variable "ssh_private_key" {
   description = "The name of the ssh private key that will be uploaded to boundary credential store. Must be placed relative to the working directory."
 }
 
-variable "deploy_rdp_target" {
-  type        = bool
-  description = "True or False. Deploy an RDP Azure Windows VM."
-}
-
 variable "deploy_database_target" {
   type        = bool
   description = "True or False. Deploy an Azure PostgreSQL Flexible server."
 }
 
+#-------------------------------------------------------------------------
+# RDP Targets
+#-------------------------------------------------------------------------
+variable "deploy_rdp_target" {
+  type        = bool
+  description = "True or False. Deploy an RDP Azure Windows VM."
+}
+
+variable "rdp_target_username" {
+  type        = string
+  description = "The username of the admin user that will be created on the VM. Will also be used to RDP."
+  default     = "boundaryadmin"
+}
+
+variable "rdp_target_password" {
+  type        = string
+  description = "The password of the `rdp_target_username` user that will be created on the VM. Will also be used to RDP."
+  default     = "B0uNdairyP@ss"
+}
 #-------------------------------------------------------------------------
 # Storage Account
 #-------------------------------------------------------------------------
