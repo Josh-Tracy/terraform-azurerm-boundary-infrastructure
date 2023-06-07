@@ -1,3 +1,6 @@
+# Work In Progress!
+Once I complete the database connection example I will consider this done.
+
 # terraform-azurerm-boundary-infrastructure
 Deploys infrastructure for testing HashiCorp Boundary
 
@@ -37,7 +40,7 @@ Set `deploy_self_managed_worker = true` if you want this code to deploy a self-m
 You must then SSH into the worker VM and retreive the `auth_request_token`.
 ```bash
 ssh -i boundary.pem boundaryadmin@100.1.2.3
-cat /opt/boundary/azure-worker/auth_request_token
+sudo cat /opt/boundary/azure-worker/auth_request_token
 ```
 
 
