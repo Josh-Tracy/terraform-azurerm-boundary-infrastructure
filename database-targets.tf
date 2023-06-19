@@ -25,7 +25,7 @@ resource "azurerm_postgresql_flexible_server" "boundary" {
   storage_mb                   = "65536"
   delegated_subnet_id          = azurerm_subnet.database_subnet[0].id
   private_dns_zone_id          = azurerm_private_dns_zone.postgres[0].id
-  zone                         = 2
+  zone                         = 1
   administrator_login          = var.database_target_username
   administrator_password       = var.database_target_password
   backup_retention_days        = 35
